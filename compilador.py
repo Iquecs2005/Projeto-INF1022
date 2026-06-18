@@ -1,13 +1,18 @@
 from lexer import ObsActLexer
-#from parser import ObsActParser
+from parser import ObsActParser
 
-lexer = ObsActLexer()
-#parser = ObsActParser()
+if __name__ == '__main__':
+    
+    lexer = ObsActLexer()
+    parser = ObsActParser()
 
-arq = open('entrada.txt', 'r')
+    arq = open('entrada.txt', 'r')
 
-data = arq.read()
-for tok in lexer.tokenize(data):
-    print(tok)
+    data = arq.read()
 
-arq.close()
+    tokens = lexer.tokenize(data)
+    result = parser.parse(tokens)
+
+    print(result)
+
+    arq.close()

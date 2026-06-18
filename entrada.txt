@@ -1,1 +1,4 @@
-dispositivo : { oicadu }
+dispositivo : { OiCadu , resenhaMeter }
+dispositivo : { OiBia }
+dispositivo : { OiAlva }
+dispositivo : { OiCarina }

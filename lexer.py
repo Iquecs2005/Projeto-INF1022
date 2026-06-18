@@ -1,13 +1,15 @@
 from sly import Lexer
 
 class ObsActLexer(Lexer):
-    tokens = {"dispositivo", "namedevice"}
-    literals = {':', '{', '}'}
+    tokens = {"dispositivo", "word"}
+    literals = {':', '{', '}', ','}
 
     ignore = ' \t'
 
     dispositivo = r'dispositivo'
-    namedevice = r'[a-zA-Z]+'
+    #namedevice = r'[a-zA-Z]+'
+    #observation = r'[a-zA-Z]+'
+    word = r'[a-zA-Z]+'
 
     @_(r'\n+')
     def ignore_newline(self, t):
