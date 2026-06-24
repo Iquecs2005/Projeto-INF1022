@@ -2,6 +2,11 @@ from sly import Parser
 from lexer import ObsActLexer
 
 class ObsActParser(Parser):
+    def __init__(self, debugMode: bool):
+        if debugMode:
+            self.debugfile = "parser.out"
+        super().__init__()
+
     tokens = ObsActLexer.tokens
 
     @_('DEVICES CMDS')
