@@ -2,3 +2,16 @@ dispositivo : { OiCadu , resenhaMeter }
 dispositivo : { OiBia }
 dispositivo : { OiAlva }
 dispositivo : { OiCarina }
+set Morra = 2.
+set resenhaMeter = True.
+set SeiLa = ligar Ventilador.
+se resenhaMeter == True entao 
+    set resenhaMeter = True.
+    set SeiLa = ligar Ventilador.
+.
+se resenhaMeter == True entao 
+    set resenhaMeter = True.
+    set SeiLa = ligar Ventilador.
+senao
+    set JohnMichael = 67.
+.
