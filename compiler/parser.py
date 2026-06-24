@@ -16,13 +16,13 @@ class ObsActParser(Parser):
     def DEVICES(self, p):
         return p.DEVICE
 
-    @_('dispositivo ":" "{" name "}"')
+    @_('dispositivo ":" "{" ID "}"')
     def DEVICE(self, p):
-        return p.name
+        return p.ID
     
-    @_('dispositivo ":" "{" name "," name "}"')
+    @_('dispositivo ":" "{" ID "," ID "}"')
     def DEVICE(self, p):
-        return p.name0 + " " + p.name1
+        return p.ID0 + " " + p.ID1
 
     @_('CMD "." CMDS')
     def CMDS(self, p):
@@ -44,13 +44,13 @@ class ObsActParser(Parser):
     def CMD(self, p):
         return p.ACT
 
-    @_('set name "=" VAR')
+    @_('set ID "=" VAR')
     def ATTRIB(self, p):
-        return p.set + " " + p.name + " = " + p.VAR
+        return p.set + " " + p.ID + " = " + p.VAR
     
-    @_('set name "=" ACTEXECUTE')
+    @_('set ID "=" ACTEXECUTE')
     def ATTRIB(self, p):
-        return p.set + " " + p.name + " = " + p.ACTEXECUTE
+        return p.set + " " + p.ID + " = " + p.ACTEXECUTE
     
     @_('se OBS entao CMDS')
     def OBSACT(self, p):
@@ -60,21 +60,21 @@ class ObsActParser(Parser):
     def OBSACT(self, p):
         return f"{p.se} {p.OBS} {p.entao} {p.CMDS0} {p.senao} {p.CMDS1} fimse"
 
-    @_('name oplogic VAR')
+    @_('ID OPLOGIC VAR')
     def OBS(self, p):
-        return p.name + " " + p.oplogic + " " + p.VAR
+        return p.ID + " " + p.OPLOGIC + " " + p.VAR
     
-    @_('name oplogic VAR conjunction OBS')
+    @_('ID OPLOGIC VAR CONJUNCTION OBS')
     def OBS(self, p):
-        return f"{p.name} {p.oplogic} {p.VAR} {p.conjunction} {p.OBS}"
+        return f"{p.ID} {p.OPLOGIC} {p.VAR} {p.CONJUNCTION} {p.OBS}"
 
-    @_('num')
+    @_('NUM')
     def VAR(self, p):
-        return p.num
+        return p.NUM
 
-    @_('bool')
+    @_('BOOL')
     def VAR(self, p):
-        return p.bool
+        return p.BOOL
     
     @_('ACTEXECUTE')
     def ACT(self, p):
@@ -84,20 +84,16 @@ class ObsActParser(Parser):
     def ACT(self, p):
         return f"{p.ACTALERT}"
 
-    @_('ACTION name')
+    @_('ACTION ID')
     def ACTEXECUTE(self, p):
-        return p.ACTION + " " + p.name
+        return p.ACTION + " " + p.ID
     
-    @_('enviar alerta "(" name ")" name')
+    @_('enviar alerta "(" ID ")" ID')
     def ACTALERT(self, p):
-        return f"{p.enviar} {p.alerta} ({p.name0}) {p.name1}"
+        return f"{p.enviar} {p.alerta} ({p.ID0}) {p.ID1}"
     
-    @_('enviar alerta "(" name "," name ")" name')
+    @_('enviar alerta "(" ID "," ID ")" ID')
     def ACTALERT(self, p):
-        return f"{p.enviar} {p.alerta} ({p.name0}, {p.name1}) {p.name2}"
-
-    @_('action')
-    def ACTION(self, p):
-        return p.action
+        return f"{p.enviar} {p.alerta} ({p.ID0}, {p.ID1}) {p.ID2}"
 
     pass
