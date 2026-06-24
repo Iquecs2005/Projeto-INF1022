@@ -1,8 +1,8 @@
 from sly import Lexer
 
 class ObsActLexer(Lexer):
-    tokens = {"dispositivo", "name", "set", "num", "bool", "action", "se", "entao", "senao", "oplogic", "conjunction"}
-    literals = {':', '{', '}', ',', '.', '='}
+    tokens = {"dispositivo", "name", "set", "num", "bool", "action", "se", "entao", "senao", "oplogic", "conjunction", "enviar", "alerta"}
+    literals = {':', '{', '}', ',', '.', '=', '(', ')'}
 
     ignore = ' \t'
 
@@ -11,11 +11,13 @@ class ObsActLexer(Lexer):
 
     entao = r'entao'
     senao = r'senao'
-    se = r'se'
+    se = r'se '
 
     oplogic = r'>|<|>=|<=|==|!='
     conjunction = r'&&'
     action = r'ligar|desligar|verificar'
+    enviar = r'enviar'
+    alerta = r'alerta'
     num = r'\d+'
     bool = r'(true|false|True|False)'
     #namedevice = r'[a-zA-Z]+'

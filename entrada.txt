@@ -4,12 +4,12 @@ dispositivo : { OiAlva }
 dispositivo : { OiCarina }
 set Morra = 2.
 set resenhaMeter = True.
-set SeiLa = ligar Ventilador.
+set seiLa = ligar Ventilador.
 se resenhaMeter == True entao 
     set resenhaMeter = True.
     set SeiLa = ligar Ventilador.
 .
-se resenhaMeter == True entao 
+se resenhaMeter==True && Morra == 2 entao 
     set resenhaMeter = True.
     set SeiLa = ligar Ventilador.
 senao

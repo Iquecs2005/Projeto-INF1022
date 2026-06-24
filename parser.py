@@ -40,9 +40,9 @@ class ObsActParser(Parser):
     def CMD(self, p):
         return p.OBSACT
     
-    # @_('ACT')
-    # def CMD(self, p):
-    #     return p.ACT
+    @_('ACT')
+    def CMD(self, p):
+        return p.ACT
 
     @_('set name "=" VAR')
     def ATTRIB(self, p):
@@ -63,6 +63,10 @@ class ObsActParser(Parser):
     @_('name oplogic VAR')
     def OBS(self, p):
         return p.name + " " + p.oplogic + " " + p.VAR
+    
+    @_('name oplogic VAR conjunction OBS')
+    def OBS(self, p):
+        return f"{p.name} {p.oplogic} {p.VAR} {p.conjunction} {p.OBS}"
 
     @_('num')
     def VAR(self, p):
@@ -72,9 +76,25 @@ class ObsActParser(Parser):
     def VAR(self, p):
         return p.bool
     
+    @_('ACTEXECUTE')
+    def ACT(self, p):
+        return f"{p.ACTEXECUTE}"
+    
+    @_('ACTALERT')
+    def ACT(self, p):
+        return f"{p.ACTALERT}"
+
     @_('ACTION name')
     def ACTEXECUTE(self, p):
         return p.ACTION + " " + p.name
+    
+    @_('enviar alerta "(" name ")" name')
+    def ACTALERT(self, p):
+        return f"{p.enviar} {p.alerta} ({p.name0}) {p.name1}"
+    
+    @_('enviar alerta "(" name "," name ")" name')
+    def ACTALERT(self, p):
+        return f"{p.enviar} {p.alerta} ({p.name0}, {p.name1}) {p.name2}"
 
     @_('action')
     def ACTION(self, p):
