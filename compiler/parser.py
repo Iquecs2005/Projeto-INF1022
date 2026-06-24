@@ -6,31 +6,38 @@ class ObsActParser(Parser):
 
     @_('DEVICES CMDS')
     def PROGRAM(self, p):
-        return p.DEVICES + "\n" + p.CMDS
+        code = f'''
+int main()
+{{
+    {p.DEVICES}
+    {p.CMDS}
+}}'''
+
+        return code
 
     @_('DEVICE DEVICES')
     def DEVICES(self, p):
-        return p.DEVICE + "\n" + p.DEVICES
+        return p.DEVICE + ";\n\t" + p.DEVICES
     
     @_('DEVICE')
     def DEVICES(self, p):
-        return p.DEVICE
+        return p.DEVICE + ";"
 
     @_('dispositivo ":" "{" ID "}"')
     def DEVICE(self, p):
-        return p.ID
+        return f"Device {p.ID} = Device(\"{p.ID}\")"
     
     @_('dispositivo ":" "{" ID "," ID "}"')
     def DEVICE(self, p):
-        return p.ID0 + " " + p.ID1
+        return f"Device {p.ID0} = Device(\"{p.ID0}\", \"{p.ID1}\")"
 
     @_('CMD "." CMDS')
     def CMDS(self, p):
-        return p.CMD + ".\n" + p.CMDS
+        return p.CMD + ";\n\t" + p.CMDS
 
     @_('CMD "."')
     def CMDS(self, p):
-        return p.CMD + "."
+        return p.CMD + ";"
 
     @_('ATTRIB')
     def CMD(self, p):
@@ -46,27 +53,53 @@ class ObsActParser(Parser):
 
     @_('set ID "=" VAR')
     def ATTRIB(self, p):
-        return p.set + " " + p.ID + " = " + p.VAR
+        return f"Device::GlobalSet(\"{p.ID}\", {p.VAR})"
     
     @_('set ID "=" ACTEXECUTE')
     def ATTRIB(self, p):
-        return p.set + " " + p.ID + " = " + p.ACTEXECUTE
+        return f"Device::GlobalSet(\"{p.ID}\", {p.ACTEXECUTE})"
     
     @_('se OBS entao CMDS')
     def OBSACT(self, p):
-        return p.se + " " + p.OBS + " " + p.entao + " " + p.CMDS + "fimse"
+        code = f'''
+if ({p.OBS}) 
+{{
+    {p.CMDS}
+}}       
+'''
+        return code
     
     @_('se OBS entao CMDS senao CMDS')
     def OBSACT(self, p):
-        return f"{p.se} {p.OBS} {p.entao} {p.CMDS0} {p.senao} {p.CMDS1} fimse"
+        code = f'''
+if ({p.OBS}) 
+{{
+    {p.CMDS0}
+}}
+else
+{{
+    {p.CMDS1}
+}}       
+'''
+        return code
 
-    @_('ID OPLOGIC VAR')
+    @_('EVAL OPLOGIC VAR')
     def OBS(self, p):
-        return p.ID + " " + p.OPLOGIC + " " + p.VAR
+        code = f'''{p.EVAL} {p.OPLOGIC} {p.VAR}'''
+        return code
     
-    @_('ID OPLOGIC VAR CONJUNCTION OBS')
+    @_('EVAL OPLOGIC VAR CONJUNCTION OBS')
     def OBS(self, p):
-        return f"{p.ID} {p.OPLOGIC} {p.VAR} {p.CONJUNCTION} {p.OBS}"
+        code = f'''{p.EVAL} {p.OPLOGIC} {p.VAR} && {p.OBS}'''
+        return code
+    
+    @_('ID')
+    def EVAL(self, p):
+        return f'''Device::GlobalGet(\"{p.ID}\")'''
+
+    @_('ACTEXECUTE')
+    def EVAL(self, p):
+        return p.ACTEXECUTE
 
     @_('NUM')
     def VAR(self, p):
@@ -74,7 +107,7 @@ class ObsActParser(Parser):
 
     @_('BOOL')
     def VAR(self, p):
-        return p.BOOL
+        return p.BOOL.lower()
     
     @_('ACTEXECUTE')
     def ACT(self, p):
@@ -86,14 +119,18 @@ class ObsActParser(Parser):
 
     @_('ACTION ID')
     def ACTEXECUTE(self, p):
-        return p.ACTION + " " + p.ID
+        return f"{p.ID}.{p.ACTION.capitalize()}()"
     
-    @_('enviar alerta "(" ID ")" ID')
-    def ACTALERT(self, p):
-        return f"{p.enviar} {p.alerta} ({p.ID0}) {p.ID1}"
+    @_('ACTION "(" ID ")"')
+    def ACTEXECUTE(self, p):
+        return f"{p.ID}.{p.ACTION.capitalize()}()"
     
-    @_('enviar alerta "(" ID "," ID ")" ID')
+    @_('enviar alerta "(" MSG ")" ID')
     def ACTALERT(self, p):
-        return f"{p.enviar} {p.alerta} ({p.ID0}, {p.ID1}) {p.ID2}"
+        return f"{p.ID}.Alert({p.MSG})"
+    
+    @_('enviar alerta "(" MSG "," ID ")" ID')
+    def ACTALERT(self, p):
+        return f"{p.ID1}.Alert({p.MSG}, \"{p.ID0}\")"
 
     pass

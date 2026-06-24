@@ -1,8 +1,8 @@
 from sly import Lexer
 
 class ObsActLexer(Lexer):
-    basicTokens = {"ID", "NUM", "BOOL", "ACTION", "OPLOGIC", "CONJUNCTION"} 
-    reservedWords = {"dispositivo", "set", "se", "entao", "senao", "enviar", "alerta"}
+    basicTokens = {"ID", "NUM", "BOOL", "ACTION", "OPLOGIC", "CONJUNCTION", "MSG"} 
+    reservedWords = {"dispositivo", "set", "se", "entao", "senao", "enviar", "alerta", "para", "todos"}
     specialWords = {"ligar" : "ACTION",
                     "desligar" : "ACTION",
                     "verificar" : "ACTION",
@@ -15,9 +15,10 @@ class ObsActLexer(Lexer):
     literals = {':', '{', '}', ',', '.', '=', '(', ')'}
     ignore = ' \t'
 
-    OPLOGIC = r'>|<|>=|<=|==|!='
+    OPLOGIC = r'>=|<=|<|>|==|!='
     CONJUNCTION = r'&&'
     NUM = r'\d+'
+    MSG = r'".*"'
     ID = r'[a-zA-Z]+'
 
     @_(r'\n+')

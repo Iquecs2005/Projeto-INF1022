@@ -1,17 +1,14 @@
-dispositivo : { OiCadu , resenhaMeter }
-dispositivo : { OiBia }
-dispositivo : { OiAlva }
-dispositivo : { OiCarina }
-set Morra = 2.
-set resenhaMeter = True.
-set seiLa = ligar Ventilador.
-se resenhaMeter == True entao 
-    set resenhaMeter = True.
-    set SeiLa = ligar Ventilador.
+dispositivo : { celular , movimento }
+dispositivo : { higrometro , umidade }
+dispositivo : { lampada , potenciaLampada }
+dispositivo : { umidificador , potenciaUmidificador }
+dispositivo : { Monitor }
+set potenciaLampada = 100 .
+se umidade < 40 entao
+    enviar alerta (" Ar seco detectado ") Monitor .
+    se verificar ( umidificador ) == 0 entao
+        ligar umidificador .
+        set potenciaUmidificador = 100 .
+    .
 .
-se resenhaMeter==True && Morra == 2 entao 
-    set resenhaMeter = True.
-    set SeiLa = ligar Ventilador.
-senao
-    set JohnMichael = 67.
-.
+se movimento == True entao ligar lampada. senao desligar lampada..

@@ -24,9 +24,20 @@ class Compiler():
         data = arq.read()
         arq.close()
         return self.compile(data)
+    
+    def compile_to_file(self, input_filename, output_filename):
+        result = self.compile_from_file(input_filename)
+
+        base = open("compiler/base.cpp", 'r')
+        baseContent = base.read()
+        base.close()
+
+        with open(output_filename + '.cpp', 'w') as f:
+            f.write(baseContent + "\n")
+            f.write(result)
 
 if __name__ == '__main__':
     
     compiler = Compiler()
-    result = compiler.compile_from_file('entrada.txt')
+    result = compiler.compile_to_file('entrada.txt', 'saida')
     print(result)
