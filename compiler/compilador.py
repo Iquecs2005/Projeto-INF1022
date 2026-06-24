@@ -5,7 +5,7 @@ class Compiler():
 
     def __init__(self):
         self.lexer = ObsActLexer()
-        self.parser = ObsActParser()
+        self.parser = ObsActParser(False)
 
     def tokenize(self, data):
         tokens = self.lexer.tokenize(data)
