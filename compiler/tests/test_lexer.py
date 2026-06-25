@@ -57,23 +57,25 @@ def testActionVerificar():
     tokens = tokenize("verificar")
     assert tokens == [("ACTION", "verificar")]
 
-def test_palavras_reservadas():
+def testReservadas():
     words = ["dispositivo", "set", "se", "entao", "senao", "enviar", "alerta"]
     for word in words:
         tokens = tokenize(word)
         assert tokens == [(word, word)]
 
 def testOplogic():
-    operaddores = [">", "<", ">=", "<=", "==", "!="]
-    for op in operaddores:
+    operadores = [">", "<", ">=", "<=", "==", "!="]
+    for op in operadores:
         tokens = tokenize(op)
-        assert tokens == [(op, op)]
+        assert tokens == [("OPLOGIC", op)]
 
 def testConjunction():
     tokens = tokenize("&&")
     assert tokens == [("CONJUNCTION", "&&")]
 
-# teste da mensagem
+def testMsg():
+    tokens = tokenize("\"Mensagem\"")
+    assert tokens == [("MSG", "\"Mensagem\"")]
 
 def testLiterais():
     literais = [":", "{", "}", ",", ".", "=", "(", ")"]
@@ -89,5 +91,14 @@ def testTab():
     tokens = tokenize("set\tnome")
     assert tokens == [("set", "set"), ("ID", "nome")]
 
-# linha nova
-# caracter errado
+def testError():
+    tokens = tokenize("@")
+    assert tokens == []
+
+def testIgnoreError():
+    tokens = tokenize("set @ nome")
+    assert tokens == [("set", "set"), ("ID", "nome")]
+
+def testNewLine():
+    tokens = tokenize("set \n nome")
+    assert tokens == [("set", "set"), ("ID", "nome")]
