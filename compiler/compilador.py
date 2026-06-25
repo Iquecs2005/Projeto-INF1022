@@ -1,11 +1,15 @@
 from lexer import ObsActLexer
 from parser import ObsActParser
 
+class CompilerError(Exception):
+    '''Raised when there was a compiler error'''
+    pass
+
 class Compiler():
 
     def __init__(self):
         self.lexer = ObsActLexer()
-        self.parser = ObsActParser(False)
+        self.parser = ObsActParser()
 
     def tokenize(self, data):
         tokens = self.lexer.tokenize(data)
@@ -28,15 +32,18 @@ class Compiler():
     def compile_to_file(self, input_filename, output_filename):
         result = self.compile_from_file(input_filename)
 
+        if result == None:
+            raise CompilerError(f"Could not compile {input_filename} contents")
+
         base = open("compiler/base.cpp", 'r')
         baseContent = base.read()
         base.close()
 
-        with open(output_filename + '.cpp', 'w') as f:
+        with open(output_filename, 'w') as f:
             f.write(baseContent + "\n")
             f.write(result)
 
 if __name__ == '__main__':
     
     compiler = Compiler()
-    result = compiler.compile_to_file('entrada.txt', 'saida')
+    result = compiler.compile_to_file('entrada.txt', 'saida.cpp')

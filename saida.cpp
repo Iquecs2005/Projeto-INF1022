@@ -148,7 +148,7 @@ int main()
 	Device celular = Device("celular");
 	Device Termometro = Device("Termometro", "temperatura");
     
-if (Device::GlobalGet("temperatura") < 30) 
+if (Device::GlobalGet("temperatura") > 30) 
 {
     Device::AlertAll({monitor, celular}, " Temperatura em ", "temperatura");
 }       

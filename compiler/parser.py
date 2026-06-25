@@ -2,10 +2,7 @@ from sly import Parser
 from lexer import ObsActLexer
 
 class ObsActParser(Parser):
-    def __init__(self, debugMode: bool):
-        if debugMode:
-            self.debugfile = "parser.out"
-        super().__init__()
+    debugfile = "parser.out"
 
     tokens = ObsActLexer.tokens
 

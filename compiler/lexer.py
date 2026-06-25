@@ -19,7 +19,7 @@ class ObsActLexer(Lexer):
     CONJUNCTION = r'&&'
     NUM = r'\d+'
     MSG = r'".*"'
-    ID = r'[a-zA-Z]+'
+    ID = r'[a-zA-Z_]+'
 
     @_(r'\n+')
     def ignore_newline(self, t):
