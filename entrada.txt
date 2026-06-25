@@ -1,14 +1,7 @@
-dispositivo : { celular , movimento }
-dispositivo : { higrometro , umidade }
-dispositivo : { lampada , potenciaLampada }
-dispositivo : { umidificador , potenciaUmidificador }
-dispositivo : { Monitor }
-set potenciaLampada = 100 .
-se umidade < 40 entao
-    enviar alerta (" Ar seco detectado ") Monitor .
-    se verificar ( umidificador ) == 0 entao
-        ligar umidificador .
-        set potenciaUmidificador = 100 .
-    .
+dispositivo : { monitor }
+dispositivo : { celular }
+dispositivo : { Termometro , temperatura }
+se temperatura > 30 entao
+enviar alerta (" Temperatura em " , temperatura ) para todos :
+monitor , celular .
 .
-se movimento == True entao ligar lampada. senao desligar lampada..

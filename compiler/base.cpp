@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
 
 class Device 
 {
@@ -46,6 +47,22 @@ public:
         return -1;
     }
 
+    static void AlertAll(std::vector<Device> devices, std::string msg)
+    {
+        for (Device deviceName : devices)
+        {
+            deviceName.Alert(msg);
+        }
+    }
+
+    static void AlertAll(std::vector<Device> devices, std::string msg, std::string observation)
+    {
+        for (Device deviceName : devices)
+        {
+            deviceName.Alert(msg, observation);
+        }
+    }
+
     void Alert(std::string msg)
     {
         std::cout << msg << std::endl;
@@ -53,26 +70,8 @@ public:
 
     void Alert(std::string msg, std::string observation)
     {
-        if (observationName == observation)
-        {
-            std::string value = std::to_string(observationValue);
-            if (isBool)
-            {
-                if (observationValue != 0)
-                {
-                    value = "true";
-                }
-                else
-                {
-                    value = "false";
-                }
-            }
-            std::cout << msg << " " << value << std::endl;
-        }
-        else
-        {
-            std::cout << msg << std::endl;
-        }
+        int value = GlobalGet(observation);
+        std::cout << msg << " " << value << std::endl;
     }
 
     bool Ligar()
@@ -105,7 +104,6 @@ public:
     std::string name;
     std::string observationName;
     int observationValue;
-    bool isBool;
     bool ligado;
 
 private:
@@ -116,7 +114,6 @@ private:
         if (observation == observationName)
         {
             observationValue = value;
-            isBool = false;
             return true;
         }
         return false;
@@ -127,7 +124,6 @@ private:
         if (observation == observationName)
         {
             observationValue = value;
-            isBool = true;
             return true;
         }
         return false;

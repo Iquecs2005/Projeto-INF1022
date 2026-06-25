@@ -137,5 +137,21 @@ else
     @_('enviar alerta "(" MSG "," ID ")" ID')
     def ACTALERT(self, p):
         return f"{p.ID1}.Alert({p.MSG}, \"{p.ID0}\")"
+    
+    @_('enviar alerta "(" MSG ")" para todos : TARGET')
+    def ACTALERT(self, p):
+        return f"Device::AlertAll({{{p.TARGET}}}, {p.MSG})"
+    
+    @_('enviar alerta "(" MSG "," ID ")" para todos : TARGET')
+    def ACTALERT(self, p):
+        return f"Device::AlertAll({{{p.TARGET}}}, {p.MSG}, \"{p.ID}\")"
+    
+    @_('ID "," TARGET')
+    def TARGET(self, p):
+        return f"{p.ID}, {p.TARGET}"
+    
+    @_('ID')
+    def TARGET(self, p):
+        return f"{p.ID}"
 
     pass
