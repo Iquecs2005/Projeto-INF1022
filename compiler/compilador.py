@@ -40,4 +40,3 @@ if __name__ == '__main__':
     
     compiler = Compiler()
     result = compiler.compile_to_file('entrada.txt', 'saida')
-    print(result)
