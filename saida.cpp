@@ -144,13 +144,24 @@ std::list<Device*> Device::deviceList;
 
 int main()
 {
-    Device monitor = Device("monitor");
-	Device celular = Device("celular");
-	Device Termometro = Device("Termometro", "temperatura");
-    
+    Device Termometro = Device("Termometro", "temperatura");
+	Device ventilador = Device("ventilador", "potencia");
+    Device::GlobalSet("temperatura", 40);
+	
 if (Device::GlobalGet("temperatura") > 30) 
 {
-    Device::AlertAll({monitor, celular}, " Temperatura em ", "temperatura");
+    Device::GlobalSet("estado_ventilador", ventilador.Verificar());
+	
+if (Device::GlobalGet("estado_ventilador") == 0) 
+{
+    ventilador.Ligar();
+	Device::GlobalSet("potencia", 90);
+}       
+;
+}
+else
+{
+    ventilador.Desligar();
 }       
 ;
 }
